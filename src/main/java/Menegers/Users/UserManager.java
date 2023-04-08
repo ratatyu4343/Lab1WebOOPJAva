@@ -37,15 +37,14 @@ public class UserManager {
             return false;
         }
     }
-
     public boolean getUserById(int id) {
         try {
             Connection connection = DataManager.getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id=?;");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE \"userId\"=?;");
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
             if (result != null && result.next()) {
-                setId(result.getInt("\"userId\""));
+                setId(result.getInt("userId"));
                 setName(result.getString("name"));
                 connection.close();
                 return true;

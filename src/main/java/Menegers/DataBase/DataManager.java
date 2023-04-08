@@ -45,10 +45,11 @@ public class DataManager {
         return jwt;
     }
     public static DecodedJWT verifyJwt(String jwt) {
+        String jwtCopy = jwt.startsWith("Bearer ") ? jwt.substring(7) : jwt;
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
             JWTVerifier verifier = JWT.require(algorithm).withIssuer(ISSUER).build();
-            return verifier.verify(jwt);
+            return verifier.verify(jwtCopy);
         } catch (Exception e){
             return null;
         }

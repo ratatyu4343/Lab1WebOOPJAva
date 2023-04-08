@@ -28,26 +28,25 @@ public class LoginController extends HttpServlet {
         String rol = req.getParameter("rolecheck");
 
         switch (rol) {
-            case "student" : {
-
+            case "student": {
+                break;
             }
-            case "teacher" : {
-
+            case "teacher": {
+                break;
             }
-            case "administrator" : {
-                AdminManager admin = new AdminManager();
-                if(admin.getAdminById(log, pas)) {
-                    String jwt = DataManager.createJwt(
-                            Integer.toString(admin.getId()),
-                            "admin",
-                            DataManager.EXPIRATION_TIME);
+            case "administrator": {
+                AdminManager user = new AdminManager();
+                if (user.getAdminById(log, pas)) {
+                    String jwt = DataManager.createJwt(Integer.toString(user.getId()), "admin", DataManager.EXPIRATION_TIME);
                     req.getSession().setAttribute("Authorization", "Bearer " + jwt);
-                    resp.sendRedirect(req.getContextPath()+"/");
+                    req.getSession().setAttribute("Role", "admin");
+                    req.getSession().setAttribute("UserId", Integer.toString(user.getId()));
+                    resp.sendRedirect(req.getContextPath() + "/");
                 } else {
-                    resp.sendRedirect(req.getContextPath()+"/login");
+                    resp.sendRedirect(req.getContextPath() + "/login");
                 }
+                break;
             }
         }
     }
-
 }
