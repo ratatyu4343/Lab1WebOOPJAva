@@ -37,11 +37,14 @@ public class LoginController extends HttpServlet {
             case "administrator" : {
                 AdminManager admin = new AdminManager();
                 if(admin.getAdminById(log, pas)) {
-                    DataManager.logger.error("Admin "+admin.getName()+" connected");
-                    RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
-                    dispatcher.forward(req, resp);
+                    String jwt = DataManager.createJwt(
+                            Integer.toString(admin.getId()),
+                            "admin",
+                            DataManager.EXPIRATION_TIME);
+                    req.getSession().setAttribute("Authorization", "Bearer " + jwt);
+                    resp.sendRedirect(req.getContextPath()+"/");
                 } else {
-                    resp.sendRedirect("login.jsp");
+                    resp.sendRedirect(req.getContextPath()+"/login");
                 }
             }
         }

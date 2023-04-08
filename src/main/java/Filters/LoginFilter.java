@@ -1,14 +1,16 @@
 package Filters;
 
+import Menegers.DataBase.DataManager;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class LoginFilter implements Filter {
-    private static final String SECRET_KEY = "mySecretKey";
-    private static final long EXPIRATION_TIME = 86400000;
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
@@ -18,17 +20,26 @@ public class LoginFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        HttpSession session = request.getSession();
 
         if(request.getRequestURI().endsWith("/login")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String authHeader = request.getHeader("Bearer ");
-        if (authHeader == null) {
+        Object authHeader =  session.getAttribute("Authorization");
+        if (authHeader == null || !authHeader.toString().startsWith("Bearer ")) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.sendRedirect(request.getContextPath()+"/login");
-        } else {
+            return;
+        }
+        String jwt = authHeader.toString().substring(7);
+        DecodedJWT decodedJWT = DataManager.verifyJwt(jwt);
+        if(decodedJWT != null) {
             filterChain.doFilter(request, response);
+        } else {
+            session.removeAttribute("Authorization");
+            response.sendRedirect(request.getContextPath()+"/login");
         }
     }
 
