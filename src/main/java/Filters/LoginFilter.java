@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class LoginFilter implements Filter {
+    private static final String UTF = "utf-8";
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
@@ -18,17 +19,19 @@ public class LoginFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
+
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
-
+        request.setCharacterEncoding(UTF);
+        response.setCharacterEncoding(UTF);
         if(request.getRequestURI().endsWith("/login")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         Object authHeader =  session.getAttribute("Authorization");
-        if (authHeader == null || !authHeader.toString().startsWith("Bearer ")) {
+        if (session.getAttribute("logout")!=null||authHeader == null || !authHeader.toString().startsWith("Bearer ")) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.sendRedirect(request.getContextPath()+"/login");
             return;

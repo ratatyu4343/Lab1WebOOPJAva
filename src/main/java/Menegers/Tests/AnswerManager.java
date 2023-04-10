@@ -39,6 +39,4 @@ public class AnswerManager {
             DataManager.logger.error(e.getMessage());
         }
     }
-
-    
 }

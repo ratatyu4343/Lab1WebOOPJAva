@@ -3,8 +3,6 @@ package Menegers.Tests;
 import Menegers.DataBase.DataManager;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,6 +60,21 @@ public class QuestionManager {
             }
             connection.close();
         }catch (Exception e) {
+            DataManager.logger.error(e.getMessage());
+        }
+    }
+
+    public void addAns(boolean isRight, String nam) {
+        try {
+            Connection connection = DataManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(
+                    "insert into answers (questionid, name, \"right\") VALUES (?, ?, ?);"
+            );
+            statement.setInt(1, getId());
+            statement.setString(2, nam);
+            statement.setBoolean(3, isRight);
+            statement.execute();
+        } catch (Exception e) {
             DataManager.logger.error(e.getMessage());
         }
     }

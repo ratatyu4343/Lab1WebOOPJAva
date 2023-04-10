@@ -54,4 +54,36 @@ public class DataManager {
             return null;
         }
     }
+
+    public static String getLessonById(int id) {
+        String res = "";
+        try {
+            Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * from lesson where \"lessonId\"=?;");
+            statement.setInt(1, id);
+            ResultSet set = statement.executeQuery();
+            if(set != null && set.next()) {
+                res = set.getString("name");
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return res;
+    }
+
+    public static String getClassById(int id){
+        String res = "";
+        try {
+            Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * from classes where \"classId\"=?;");
+            statement.setInt(1, id);
+            ResultSet set = statement.executeQuery();
+            if(set != null && set.next()) {
+                res = set.getInt("year")+set.getString("litera");
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return res;
+    }
 }

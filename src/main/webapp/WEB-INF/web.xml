@@ -32,4 +32,44 @@
     <servlet-name>Home</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Lesson</servlet-name>
+    <servlet-class>Controllers.LessonController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Lesson</servlet-name>
+    <url-pattern>/admin/changelesson</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Class</servlet-name>
+    <servlet-class>Controllers.ClassController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Class</servlet-name>
+    <url-pattern>/admin/changeclass</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>User</servlet-name>
+    <servlet-class>Controllers.UserController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>User</servlet-name>
+    <url-pattern>/admin/changeuser</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Test</servlet-name>
+    <servlet-class>Controllers.TestController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Test</servlet-name>
+    <url-pattern>/teacher/changetest</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Question</servlet-name>
+    <servlet-class>Controllers.QuestionController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Question</servlet-name>
+    <url-pattern>/teacher/changequestion</url-pattern>
+  </servlet-mapping>
 </web-app>

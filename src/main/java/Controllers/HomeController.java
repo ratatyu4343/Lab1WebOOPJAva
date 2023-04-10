@@ -10,6 +10,16 @@ import java.io.IOException;
 public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("index.jsp").forward(req, resp);
+        switch (req.getSession().getAttribute("Role").toString()){
+            case "student":
+                req.getRequestDispatcher("/student/panel.jsp").forward(req, resp);
+                break;
+            case "teacher":
+                req.getRequestDispatcher("/teacher/panel.jsp").forward(req, resp);
+                break;
+            case "admin":
+                req.getRequestDispatcher("/admin/panel.jsp").forward(req, resp);
+                break;
+        }
     }
 }
