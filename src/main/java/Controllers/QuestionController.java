@@ -33,6 +33,8 @@ public class QuestionController extends HttpServlet {
             QuestionManager manager = new QuestionManager();
             manager.getQuestionById(questId);
             manager.addAns(false, "");
+        } else if(type.equals("update")){
+            String ans = req.getParameter("a");
         }
         resp.sendRedirect(req.getHeader("Referer"));
     }

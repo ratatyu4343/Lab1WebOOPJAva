@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class TeacherManager extends UserManager {
     @Getter
@@ -156,6 +157,42 @@ public class TeacherManager extends UserManager {
             }
         } else{
             return false;
+        }
+    }
+
+    public void updateTeacher(){
+        updateUser();
+        try{
+            Connection connection = DataManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM teachers_classes WHERE \"teacherId\"=?;"
+            );
+            statement.setInt(1, getId());
+            statement.execute();
+            statement = connection.prepareStatement(
+                    "DELETE FROM teachers WHERE \"userId\"=?;"
+            );
+            statement.execute();
+            Set<Integer> set = lessons.keySet();
+            for(Integer i : set) {
+                statement = connection.prepareStatement(
+                        "INSERT INTO teachers (\"userId\", \"lessonId\") VALUES (?, ?)");
+                statement.setInt(1, getId());
+                statement.setInt(2, i);
+                statement.execute();
+                ArrayList<Integer> clArr = lessons.get(i);
+                for(Integer j : clArr){
+                    PreparedStatement statement2 = connection.prepareStatement(
+                    "INSERT INTO teachers_classes (\"teacherId\", \"lessonId\", \"classId\") VALUES (?,?,?);"
+                    );
+                    statement2.setInt(1, getId());
+                    statement2.setInt(2, i);
+                    statement2.setInt(3, j);
+                    statement2.execute();
+                }
+            }
+        } catch (Exception e) {
+            DataManager.logger.error(e.getMessage());
         }
     }
 }

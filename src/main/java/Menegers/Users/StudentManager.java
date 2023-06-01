@@ -81,5 +81,18 @@ public class StudentManager extends UserManager {
             return false;
         }
     }
-
+    public void updateStudent(){
+        updateUser();
+        try{
+            Connection connection = DataManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE students SET \"classId\"=? WHERE \"userId\"=?;"
+            );
+            statement.setInt(1, getClassId());
+            statement.setInt(2, getId());
+            statement.execute();
+        } catch (Exception e) {
+            DataManager.logger.error(e.getMessage());
+        }
+    }
 }

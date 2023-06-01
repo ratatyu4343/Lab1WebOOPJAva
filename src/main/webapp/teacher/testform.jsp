@@ -14,9 +14,9 @@
 <html>
 <head>
     <title>Тест</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <form>
         <div><input type="text" value="<%=test.getName()%>" name="testname"></div>
         <div><textarea type="tex" name="testdiscription"><%=test.getDiscription()%></textarea></div>
         <div><input list="datalist" value="<%=test.getLessonId()%>" name="testlesson"></div>
@@ -37,6 +37,7 @@
         %>
         <div><li><div><input type="text" name="q<%=qNum%>" value="<%=question.getName()%>"></div>
             <ol>
+                <form method="post" action="<%=request.getContextPath()%>/teacher/changequestion?test_id=<%=test.getId()%>&question_id=<%=question.getId()%>">
             <%  ArrayList<AnswerManager> answers = question.getAnswers();
                 int ansNum = 1;
                 for(AnswerManager answer : answers){%>
@@ -45,21 +46,19 @@
                         <input type="<%=question.isType()?"checkbox":"radio"%>" value="<%=answer.getId()%>" name="ansright<%=ansNum%>" <%=answer.isRight()?"checked":""%>>
                     </li>
                 <%ansNum += 1;}%>
+                    <button type="submit" value="delete" name="what">Видалити питання</button>
+                    <button type="submit" value="addask" name="what">Додати відповідь</button>
+                    <button type="submit" value="update" name="what">Оновити</button>
+                </form>
             </ol>
-            <form method="post" action="<%=request.getContextPath()%>/teacher/changequestion?test_id=<%=test.getId()%>&question_id=<%=question.getId()%>">
-                <button type="submit" value="delete" name="what">Видалити питання</button>
-                <button type="submit" value="addask" name="what">Додати відповідь</button>
-            </form>
         <%}%>
         </li>
         </div>
         </ol>
+
         <form method="post" action="<%=request.getContextPath()%>/teacher/changequestion?test_id=<%=test.getId()%>">
             <button type="submit" value="add1" name="what">Додати питання з 1 відповідю</button>
             <button type="submit" value="add2" name="what">Додати питання з декількома відповідями</button>
         </form>
-        <button type="submit" value="update" name="what">Оновити тест</button>
-        <button type="submit" value="delete" name="what">Видалити тест</button>
-    </form>
 </body>
 </html>

@@ -25,6 +25,7 @@ public class UserController extends HttpServlet {
         String log = req.getParameter("userlogin");
         String pas = req.getParameter("userpassword");
         String nam = req.getParameter("username");
+        String us_id = req.getParameter("user_id");
         if(what.equals("add")){
             if(user_type.equals("student")){
                 int clasId = Integer.parseInt(req.getParameter("userclass"));
@@ -59,8 +60,14 @@ public class UserController extends HttpServlet {
                 }return;*/
             }
         } else if(what.equals("update")){
+            if(user_type.equals("student")){
+                int clasId = Integer.parseInt(req.getParameter("userclass"));
+                StudentManager manager = new StudentManager();
+                manager.getUserById(Integer.parseInt(us_id));
 
+            } else if(user_type.equals("teacher")){
 
+            }
         } else if(what.equals("delete")){
             return;
         }

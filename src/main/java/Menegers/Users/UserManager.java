@@ -87,5 +87,31 @@ public class UserManager {
             return false;
         }
     }
-
+    public void updateUser(){
+        try{
+            Connection connection = DataManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE users SET login=?,pasword=?,name=? WHERE \"userId\"=?;"
+            );
+            statement.setString(1, getUserLogin());
+            statement.setString(2, getUserPassword());
+            statement.setString(3, getName());
+            statement.setInt(4, getId());
+            statement.execute();
+        } catch (Exception e) {
+            DataManager.logger.error(e.getMessage());
+        }
+    }
+    public void deleteUser(){
+        try{
+            Connection connection = DataManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM users WHERE \"userId\"=?;"
+            );
+            statement.setInt(1, getId());
+            statement.execute();
+        } catch (Exception e) {
+            DataManager.logger.error(e.getMessage());
+        }
+    }
 }
